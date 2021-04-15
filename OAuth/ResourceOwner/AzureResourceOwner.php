@@ -70,7 +70,10 @@ class AzureResourceOwner extends GenericOAuth2ResourceOwner
         }
 
         $response = parent::getUserInformation($accessToken, $extraParameters);
-        $response->setData(base64_decode($jwt));
+        $response->setData(
+            array_merge(
+                $response->getData() ?? [],
+                json_decode(base64_decode($jwt), true)));
 
         return $response;
     }
